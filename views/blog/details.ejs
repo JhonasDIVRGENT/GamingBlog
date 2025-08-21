@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.Title %> - 🎮 Gaming Blog</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #00cec9;
+            --dark-color: #2d3436;
+            --light-color: #f8f9fa;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-success: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-strong: 0 20px 60px rgba(0,0,0,0.15);
+            --border-radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .hero-header {
+            background: var(--gradient-primary);
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .breadcrumb-nav {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb-item a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .breadcrumb-item a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .breadcrumb-item.active {
+            color: white;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-meta {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+            padding: 3rem 0;
+            min-height: 80vh;
+        }
+
+        /* Post Content */
+        .post-content-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-accent);
+        }
+
+        .post-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .post-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--border-radius);
+        }
+
+        .meta-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .meta-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .meta-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: 'Orbitron', monospace;
+        }
+
+        .post-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 2rem;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .comment-form {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        .form-control {
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: var(--gradient-accent);
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        /* Comment Cards */
+        .comment-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .comment-card:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .comment-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 1rem;
+        }
+
+        .comment-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            color: var(--primary-color);
+        }
+
+        .btn-delete {
+            color: #e74c3c;
+        }
+
+        .btn-action:hover {
+            background: rgba(0,0,0,0.1);
+            transform: scale(1.1);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .sidebar-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .action-item {
+            margin-bottom: 1rem;
+        }
+
+        .action-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .action-link:hover {
+            transform: translateX(10px);
+            background: var(--gradient-accent);
+            color: white;
+            text-decoration: none;
+        }
+
+        .action-icon {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        /* Loading States */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(79, 172, 254, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-comments {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #888;
+        }
+
+        .empty-comments i {
+            font-size: 4rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .post-title {
+                font-size: 2rem;
+            }
+            
+            .post-content-section,
+            .comments-section {
+                padding: 1.5rem;
+            }
+            
+            .meta-item {
+                padding: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.6s ease-in-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .bounce-in {
+            animation: bounceIn 0.8s ease-in-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Header -->
+    <header class="hero-header">
+        <div class="container">
+            <!-- Breadcrumb Navigation -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-nav">
+                    <li class="breadcrumb-item">
+                        <a href="/blog"><i class="fas fa-home me-2"></i>Blog</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fas fa-file-alt me-2"></i><%= post.Title %>
+                    </li>
+                </ol>
+            </nav>
+            
+            <!-- Hero Content -->
+            <div class="text-center">
+                <h1 class="hero-title" data-aos="fade-down" data-aos-duration="1000">
+                    <%= post.Title %>
+                </h1>
+                <div class="hero-meta" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    <%= new Date(post.CreatedAt).toLocaleDateString('es-ES', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) %>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="row">
+                <!-- Main Content Column -->
+                <div class="col-lg-8">
+                    <!-- Post Content Section -->
+                    <article class="post-content-section" data-aos="fade-up" data-aos-duration="800">
+                        <!-- Post Meta Grid -->
+                        <div class="post-meta-grid" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="fas fa-hashtag"></i>
+                                </div>
+                                <div class="meta-label">Post ID</div>
+                                <div class="meta-value"><%= post.PostID %></div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="meta-label">Usuario</div>
+                                <div class="meta-value"><%= post.UserID %></div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="meta-label">Creado</div>
+                                <div class="meta-value"><%= new Date(post.CreatedAt).toLocaleDateString('es-ES') %></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post Content -->
+                        <div class="post-text" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                            <%= post.Content %>
+                        </div>
+                    </article>
+
+                    <!-- Comments Section -->
+                    <section class="comments-section" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
+                        <h2 class="section-title">
+                            <i class="fas fa-comments"></i>Comentarios
+                        </h2>
+                        
+                        <!-- Comment Form -->
+                        <form class="comment-form" id="commentForm">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label for="commentContent" class="form-label">
+                                            <i class="fas fa-edit me-2"></i>Tu comentario
+                                        </label>
+                                        <textarea class="form-control" id="commentContent" rows="4" required 
+                                                  placeholder="Comparte tu opinión sobre este post..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="userID" class="form-label">
+                                            <i class="fas fa-user me-2"></i>Tu ID
+                                        </label>
+                                        <input type="number" class="form-control" id="userID" value="1" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-submit w-100" id="submitCommentBtn">
+                                        <span class="btn-text">
+                                            <i class="fas fa-paper-plane me-2"></i>Enviar
+                                        </span>
+                                        <span class="btn-loading d-none">
+                                            <span class="loading-spinner me-2"></span>Enviando...
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Comments List -->
+                        <div id="commentsContainer">
+                            <div class="empty-comments" id="emptyComments">
+                                <i class="fas fa-comment-slash"></i>
+                                <h4>No hay comentarios aún</h4>
+                                <p>¡Sé el primero en comentar!</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <!-- About Post Card -->
+                        <div class="sidebar-card" data-aos="slide-in-left" data-aos-duration="800" data-aos-delay="400">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-info-circle"></i>Acerca del Post
+                            </h3>
+                            <p class="text-muted">
+                                Este es un post del Gaming Blog donde puedes encontrar información detallada, 
+                                comentarios de la comunidad y participar en la discusión.
+                            </p>
+                        </div>
+                        
+                        <!-- Actions Card -->
+                        <div class="sidebar-card" data-aos="slide-in-left" data-aos-duration="800" data-aos-delay="600">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-tools"></i>Acciones
+                            </h3>
+                            <ul class="action-list">
+                                <li class="action-item">
+                                    <a href="/blog" class="action-link">
+                                        <i class="fas fa-arrow-left action-icon"></i>
+                                        Volver al Blog
+                                    </a>
+                                </li>
+                                <li class="action-item">
+                                    <a href="#" class="action-link" onclick="editPost()">
+                                        <i class="fas fa-edit action-icon"></i>
+                                        Editar Post
+                                    </a>
+                                </li>
+                                <li class="action-item">
+                                    <a href="#" class="action-link text-danger" onclick="deletePost()">
+                                        <i class="fas fa-trash action-icon"></i>
+                                        Eliminar Post
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Share Card -->
+                        <div class="sidebar-card" data-aos="slide-in-left" data-aos-duration="800" data-aos-delay="800">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-share-alt"></i>Compartir
+                            </h3>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" onclick="sharePost()">
+                                    <i class="fab fa-facebook me-2"></i>Facebook
+                                </button>
+                                <button class="btn btn-outline-info" onclick="sharePost()">
+                                    <i class="fab fa-twitter me-2"></i>Twitter
+                                </button>
+                                <button class="btn btn-outline-success" onclick="sharePost()">
+                                    <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+
+        // Post data from EJS
+        const postData = {
+            id: <%= post.PostID %>,
+            title: '<%= post.Title.replace(/'/g, "\\'") %>',
+            content: '<%= post.Content.replace(/'/g, "\\'") %>'
+        };
+
+        // DOM elements
+        const commentsContainer = document.getElementById('commentsContainer');
+        const commentForm = document.getElementById('commentForm');
+        const submitCommentBtn = document.getElementById('submitCommentBtn');
+        const emptyComments = document.getElementById('emptyComments');
+
+        // Load comments on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComments();
+        });
+
+        // Load comments function
+        async function loadComments() {
+            try {
+                const response = await fetch(`/blog/${postData.id}/comments`);
+                if (!response.ok) throw new Error('Error al obtener comentarios');
+                
+                const comments = await response.json();
+                displayComments(comments);
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                showError('No se pudieron cargar los comentarios');
+            }
+        }
+
+        // Display comments function
+        function displayComments(comments) {
+            if (!comments || comments.length === 0) {
+                emptyComments.style.display = 'block';
+                return;
+            }
+
+            emptyComments.style.display = 'none';
+            commentsContainer.innerHTML = '';
+
+            comments.forEach((comment, index) => {
+                const commentElement = createCommentElement(comment, index);
+                commentsContainer.appendChild(commentElement);
+            });
+        }
+
+        // Create comment element
+        function createCommentElement(comment, index) {
+            const div = document.createElement('div');
+            div.className = 'comment-card';
+            div.style.animationDelay = `${index * 100}ms`;
+            div.classList.add('fade-in');
+            
+            const createdAt = comment.CreatedAt ? 
+                new Date(comment.CreatedAt).toLocaleString('es-ES') : 'Fecha desconocida';
+
+            div.innerHTML = `
+                <div class="comment-content">${comment.Content}</div>
+                <div class="comment-meta">
+                    <span><i class="fas fa-user me-1"></i>Usuario ${comment.UserID}</span>
+                    <span><i class="fas fa-clock me-1"></i>${createdAt}</span>
+                </div>
+                <div class="comment-actions">
+                    <button class="btn-action btn-edit" onclick="editComment(${comment.CommentID})" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-action btn-delete" onclick="deleteComment(${comment.CommentID})" title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Submit comment form
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = submitCommentBtn;
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            
+            // Show loading state
+            btnText.classList.add('d-none');
+            btnLoading.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            const content = document.getElementById('commentContent').value.trim();
+            const userID = parseInt(document.getElementById('userID').value, 10) || 1;
+            
+            if (!content) {
+                alert('Escribe un comentario antes de enviar');
+                resetCommentForm();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/blog/${postData.id}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content, userID })
+                });
+                
+                if (!response.ok) throw new Error('Error al enviar comentario');
+                
+                // Success animation
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>¡Enviado!';
+                submitBtn.style.background = 'var(--gradient-success)';
+                
+                // Reset form and reload comments
+                document.getElementById('commentContent').value = '';
+                setTimeout(() => {
+                    loadComments();
+                    resetCommentForm();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error sending comment:', error);
+                alert('No se pudo enviar el comentario: ' + error.message);
+                resetCommentForm();
+            }
+        });
+
+        function resetCommentForm() {
+            const submitBtn = submitCommentBtn;
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            
+            btnText.classList.remove('d-none');
+            btnLoading.classList.add('d-none');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = btnText.outerHTML;
+            submitBtn.style.background = '';
+        }
+
+        // Edit comment function
+        async function editComment(commentID) {
+            if (!commentID) return;
+            
+            const newContent = prompt('Editar comentario:');
+            if (newContent === null) return; // User cancelled
+            
+            const content = newContent.trim();
+            if (!content) return alert('El contenido no puede quedar vacío');
+            
+            try {
+                const response = await fetch(`/blog/comments/${commentID}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content })
+                });
+                
+                if (!response.ok) throw new Error('Error al editar comentario');
+                
+                showSuccess('Comentario editado exitosamente');
+                loadComments();
+            } catch (error) {
+                console.error('Error editing comment:', error);
+                alert('No se pudo editar el comentario: ' + error.message);
+            }
+        }
+
+        // Delete comment function
+        async function deleteComment(commentID) {
+            if (!commentID) return;
+            if (!confirm('¿Estás seguro de que quieres eliminar este comentario?')) return;
+            
+            try {
+                const response = await fetch(`/blog/comments/${commentID}`, { 
+                    method: 'DELETE' 
+                });
+                
+                if (!response.ok) throw new Error('Error al eliminar comentario');
+                
+                showSuccess('Comentario eliminado exitosamente');
+                loadComments();
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+                alert('No se pudo eliminar el comentario: ' + error.message);
+            }
+        }
+
+        // Edit post function
+        function editPost() {
+            const newTitle = prompt('Nuevo título:', postData.title);
+            const newContent = prompt('Nuevo contenido:', postData.content);
+            
+            if (newTitle && newContent) {
+                fetch(`/blog/${postData.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: newTitle, content: newContent })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        showSuccess('Post actualizado exitosamente');
+                        setTimeout(() => location.reload(), 1500);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al actualizar post: ' + error.message);
+                });
+            }
+        }
+
+        // Delete post function
+        function deletePost() {
+            if (confirm('¿Estás seguro de que quieres eliminar este post? Esta acción no se puede deshacer.')) {
+                fetch(`/blog/${postData.id}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        showSuccess('Post eliminado exitosamente');
+                        setTimeout(() => {
+                            window.location.href = '/blog';
+                        }, 1500);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al eliminar post: ' + error.message);
+                });
+            }
+        }
+
+        // Share post function
+        function sharePost() {
+            const url = window.location.href;
+            const text = `¡Mira este post en Gaming Blog: ${postData.title}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: postData.title,
+                    text: text,
+                    url: url
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+                window.open(shareUrl, '_blank');
+            }
+        }
+
+        // Utility functions
+        function showSuccess(message) {
+            // You can implement a toast notification here
+            console.log('Success:', message);
+        }
+
+        function showError(message) {
+            // You can implement a toast notification here
+            console.error('Error:', message);
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to action links
+            const actionLinks = document.querySelectorAll('.action-link');
+            actionLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(10px) scale(1.05)';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+            
+            // Add click effect to meta items
+            const metaItems = document.querySelectorAll('.meta-item');
+            metaItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.animation = 'bounce-in 0.6s ease-in-out';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 600);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

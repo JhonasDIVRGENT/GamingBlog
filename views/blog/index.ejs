@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Gaming Blog - Tu Portal de Gaming</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #00cec9;
+            --dark-color: #2d3436;
+            --light-color: #f8f9fa;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-strong: 0 20px 60px rgba(0,0,0,0.15);
+            --border-radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .hero-header {
+            background: var(--gradient-primary);
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: floatElement 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 60%; right: 15%; animation-delay: 2s; }
+        .floating-element:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 4s; }
+
+        @keyframes floatElement {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-30px) scale(1.2); opacity: 0.6; }
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+            padding: 3rem 0;
+            min-height: 80vh;
+        }
+
+        /* Post Cards */
+        .post-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .post-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .post-card .card-body {
+            padding: 2rem;
+        }
+
+        .post-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .post-card:hover .post-title {
+            color: var(--primary-color);
+        }
+
+        .post-content {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .post-meta i {
+            color: var(--accent-color);
+        }
+
+        /* Buttons */
+        .btn-modern {
+            background: var(--gradient-accent);
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+            color: white;
+        }
+
+        .btn-create {
+            background: var(--gradient-secondary);
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-create:hover {
+            box-shadow: 0 15px 35px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Create Post Modal */
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--shadow-strong);
+        }
+
+        .modal-header {
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            border: none;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+        }
+
+        .form-control {
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            padding: 0.8rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .main-content {
+                padding: 2rem 0;
+            }
+            
+            .post-card .card-body {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #888;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            padding: 0.8rem 1.5rem;
+            width: 100%;
+            border-radius: 50px;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            font-family: 'Orbitron', monospace;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Header -->
+    <header class="hero-header">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        
+        <div class="container text-center">
+            <h1 class="hero-title" data-aos="fade-down" data-aos-duration="1000">
+                🎮 Gaming Blog
+            </h1>
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                Tu portal definitivo para noticias, reviews y contenido gaming
+            </p>
+            
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button class="btn btn-create" data-bs-toggle="modal" data-bs-target="#createPostModal" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="400">
+                    <i class="fas fa-plus me-2"></i>Crear Nuevo Post
+                </button>
+                <button class="btn btn-modern" onclick="scrollToContent()" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="600">
+                    <i class="fas fa-arrow-down me-2"></i>Explorar
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Stats Section -->
+            <div class="stats-container" data-aos="fade-up" data-aos-duration="800">
+                <div class="stat-card">
+                    <div class="stat-number"><%= posts.length %></div>
+                    <div class="stat-label">Posts Totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= posts.filter(p => new Date(p.CreatedAt) > new Date(Date.now() - 7*24*60*60*1000)).length %></div>
+                    <div class="stat-label">Esta Semana</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= posts.filter(p => p.UserID === 1).length %></div>
+                    <div class="stat-label">Por Admin</div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Buscar posts..." onkeyup="filterPosts()">
+            </div>
+
+            <!-- Posts Grid -->
+            <div class="row g-4" id="postsContainer">
+                <% if (posts.length === 0) { %>
+                    <div class="col-12">
+                        <div class="empty-state" data-aos="fade-up">
+                            <i class="fas fa-gamepad"></i>
+                            <h3>No hay posts aún</h3>
+                            <p>¡Sé el primero en crear contenido para la comunidad gaming!</p>
+                            <button class="btn btn-create" data-bs-toggle="modal" data-bs-target="#createPostModal">
+                                <i class="fas fa-plus me-2"></i>Crear Primer Post
+                            </button>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% posts.forEach((post, index) => { %>
+                        <div class="col-lg-6 col-xl-4 post-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="<%= index * 100 %>">
+                            <div class="post-card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="post-title"><%= post.Title %></h5>
+                                    <p class="post-content"><%= post.Content.length > 150 ? post.Content.substring(0, 150) + '...' : post.Content %></p>
+                                    
+                                    <div class="post-meta">
+                                        <span><i class="fas fa-calendar"></i> <%= new Date(post.CreatedAt).toLocaleDateString('es-ES') %></span>
+                                        <span><i class="fas fa-user"></i> Usuario <%= post.UserID %></span>
+                                    </div>
+                                    
+                                    <div class="mt-auto">
+                                        <a href="/blog/<%= post.PostID %>" class="btn btn-modern w-100">
+                                            <i class="fas fa-arrow-right me-2"></i>Leer Más
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Post Modal -->
+    <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPostModalLabel">
+                        <i class="fas fa-plus-circle me-2"></i>Crear Nuevo Post
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createPostForm">
+                        <div class="mb-3">
+                            <label for="postTitle" class="form-label">
+                                <i class="fas fa-heading me-2"></i>Título del Post
+                            </label>
+                            <input type="text" class="form-control" id="postTitle" required 
+                                   placeholder="Escribe un título llamativo...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="postContent" class="form-label">
+                                <i class="fas fa-edit me-2"></i>Contenido
+                            </label>
+                            <textarea class="form-control" id="postContent" rows="6" required 
+                                      placeholder="Comparte tu experiencia gaming..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postUserID" class="form-label">
+                                <i class="fas fa-user me-2"></i>User ID
+                            </label>
+                            <input type="number" class="form-control" id="postUserID" value="1" required>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-create" id="submitBtn">
+                                <span class="btn-text">
+                                    <i class="fas fa-rocket me-2"></i>Publicar Post
+                                </span>
+                                <span class="btn-loading d-none">
+                                    <span class="loading-spinner me-2"></span>Publicando...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+
+        // Smooth scroll to content
+        function scrollToContent() {
+            document.querySelector('.main-content').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Filter posts functionality
+        function filterPosts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const postItems = document.querySelectorAll('.post-item');
+            
+            postItems.forEach(item => {
+                const title = item.querySelector('.post-title').textContent.toLowerCase();
+                const content = item.querySelector('.post-content').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeIn 0.5s ease-in-out';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Create post form handling
+        document.getElementById('createPostForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            
+            // Show loading state
+            btnText.classList.add('d-none');
+            btnLoading.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            const userID = parseInt(document.getElementById('postUserID').value, 10) || 1;
+            
+            if (!title || !content) {
+                alert('Título y contenido son obligatorios');
+                resetForm();
+                return;
+            }
+            
+            try {
+                const res = await fetch('/blog/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, content, userID })
+                });
+                
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.error || 'Error al crear post');
+                }
+                
+                // Success animation
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>¡Post Creado!';
+                submitBtn.style.background = 'linear-gradient(135deg, #00b894 0%, #00cec9 100%)';
+                
+                setTimeout(() => {
+                    // Close modal and reload
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('createPostModal'));
+                    if (modal) modal.hide();
+                    location.reload();
+                }, 1500);
+                
+            } catch (err) {
+                console.error('Error creating post:', err);
+                alert('No se pudo crear el post: ' + err.message);
+                resetForm();
+            }
+        });
+        
+        function resetForm() {
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            
+            btnText.classList.remove('d-none');
+            btnLoading.classList.add('d-none');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = btnText.outerHTML;
+            submitBtn.style.background = '';
+        }
+        
+        // Reset form when modal closes
+        document.getElementById('createPostModal').addEventListener('hidden.bs.modal', function () {
+            document.getElementById('createPostForm').reset();
+            resetForm();
+        });
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to floating elements
+            const floatingElements = document.querySelectorAll('.floating-element');
+            floatingElements.forEach(el => {
+                el.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.5) rotate(180deg)';
+                    this.style.background = 'rgba(255,255,255,0.3)';
+                });
+                
+                el.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.background = '';
+                });
+            });
+            
+            // Add typing effect to hero title
+            const heroTitle = document.querySelector('.hero-title');
+            const originalText = heroTitle.textContent;
+            heroTitle.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    heroTitle.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body>
+</html>

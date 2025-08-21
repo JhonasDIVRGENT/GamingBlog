@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Programacion_Jhonas\\21Agosto\\logs\\.bb1a0252bdb6774c3f603dc78a2b86bee2067128-audit.json",
+    "files": [
+        {
+            "date": 1755794049456,
+            "name": "D:\\Programacion_Jhonas\\21Agosto\\logs\\error-2025-08-21.log",
+            "hash": "34bb126ed56cd52b55ccadf4180f7fd49a5de779f454caeb2ebc31e1f3cb6ade"
+        }
+    ],
+    "hashType": "sha256"
+}
